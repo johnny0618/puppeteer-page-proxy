@@ -6,9 +6,12 @@ const type = require("../util/types");
 // Responsible for applying proxy
 const requestHandler = async (request, proxy, overrides = {}) => {
     // Reject non http(s) URI schemes
-    if (!request.url().startsWith("http") && !request.url().startsWith("https")) {
+	let url = request.url();
+	let frame = request.frame();
+    if (url != '' && url.contains('://') && !url.startsWith("http") && !url.startsWith("https")) {
         request.continue(); return;
     }
+	
     const cookieHandler = new CookieHandler(request);
     // Request options for Got accounting for overrides
     const options = {
