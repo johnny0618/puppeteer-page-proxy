@@ -8,7 +8,7 @@ const requestHandler = async (request, proxy, overrides = {}) => {
     // Reject non http(s) URI schemes
 	let url = request.url();
 	let frame = request.frame();
-    if (url != '' && url.contains('://') && !url.startsWith("http") && !url.startsWith("https")) {
+    if (url != '' && url.includes('://') && !url.startsWith("http") && !url.startsWith("https")) {
         request.continue(); return;
     }
 	
