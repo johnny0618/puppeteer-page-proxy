@@ -11,7 +11,11 @@ const requestHandler = async (request, proxy, overrides = {}) => {
     if (url != '' && url.includes('://') && !url.startsWith("http") && !url.startsWith("https")) {
         request.continue(); return;
     }
-	
+    this.url = request.isNavigationRequest() ? request.url() : (request.frame() == null ? "" : request.frame().url());
+    let isNavRequest = request.isNavigationRequest();
+    if(!isNavRequest && (request.frame() == null || !request.frame().url().includes("http"))){
+        request.continue(); return;
+    }
     const cookieHandler = new CookieHandler(request);
     // Request options for Got accounting for overrides
     const options = {
